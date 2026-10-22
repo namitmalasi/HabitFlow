@@ -1,77 +1,42 @@
-import { useState } from "react";
 import { CheckCircle2, Flame, Target } from "lucide-react";
 import ProgressCard from "../components/dashboard/ProgressCard";
 import HabitList from "../components/habits/HabitList";
-
-const initialHabits = [
-  {
-    id: 1,
-    name: "Morning workout",
-    category: "Health",
-    icon: "🏋️",
-    color: "#22c55e",
-    completed: true,
-  },
-  {
-    id: 2,
-    name: "Read 10 pages",
-    category: "Learning",
-    icon: "📚",
-    color: "#8b5cf6",
-    completed: true,
-  },
-  {
-    id: 3,
-    name: "Drink enough water",
-    category: "Health",
-    icon: "💧",
-    color: "#3b82f6",
-    completed: false,
-  },
-  {
-    id: 4,
-    name: "Practice coding",
-    category: "Productivity",
-    icon: "💻",
-    color: "#f59e0b",
-    completed: false,
-  },
-];
+import { useHabitStore } from "../store/habitStore";
+import { getToday } from "../utils/dates";
 
 export default function Dashboard() {
-  const [habits, setHabits] = useState(initialHabits);
+  const habits = useHabitStore((state) => state.habits);
+  const toggleHabit = useHabitStore((state) => state.toggleHabit);
+  const addHabit = useHabitStore((state) => state.addHabit);
 
-  const completedCount = habits.filter((habit) => habit.completed).length;
+  const today = getToday();
+
+  const completedCount = habits.filter((habit) =>
+    habit.completedDates.includes(today),
+  ).length;
 
   const progress = habits.length
     ? Math.round((completedCount / habits.length) * 100)
     : 0;
 
-  function toggleHabit(id) {
-    setHabits((current) =>
-      current.map((habit) =>
-        habit.id === id ? { ...habit, completed: !habit.completed } : habit,
-      ),
-    );
-  }
-
-  function addHabit() {
+  function handleAddHabit() {
     const name = window.prompt("Enter a habit name");
 
     if (!name?.trim()) return;
 
-    setHabits((current) => [
-      ...current,
-      {
-        id: crypto.randomUUID(),
-        name: name.trim(),
-        category: "Personal",
-        icon: "🎯",
-        color: "#22c55e",
-        completed: false,
-      },
-    ]);
+    addHabit({
+      name: name.trim(),
+      category: "Personal",
+      icon: "🎯",
+      color: "#22c55e",
+      targetFrequency: 7,
+    });
   }
+
+  const displayHabits = habits.map((habit) => ({
+    ...habit,
+    completed: habit.completedDates.includes(today),
+  }));
 
   return (
     <div className="mx-auto max-w-6xl space-y-8 p-5 sm:p-8">
@@ -97,8 +62,8 @@ export default function Dashboard() {
 
         <ProgressCard
           title="Current streak"
-          value="7 days"
-          subtitle="Keep your momentum going!"
+          value="Coming soon"
+          subtitle="Your streak calculation is next."
           icon={Flame}
           color="text-orange-500"
         />
@@ -112,7 +77,11 @@ export default function Dashboard() {
         />
       </section>
 
-      <HabitList habits={habits} onToggle={toggleHabit} onAdd={addHabit} />
+      <HabitList
+        habits={displayHabits}
+        onToggle={toggleHabit}
+        onAdd={handleAddHabit}
+      />
 
       <footer className="pb-4 text-center text-sm text-gray-400">
         Made for better habits, one day at a time.
