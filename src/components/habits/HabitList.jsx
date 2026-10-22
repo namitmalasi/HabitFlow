@@ -1,7 +1,13 @@
 import { Plus } from "lucide-react";
 import HabitCard from "./HabitCard";
 
-export default function HabitList({ habits, onToggle, onAdd }) {
+export default function HabitList({
+  habits,
+  onToggle,
+  onAdd,
+  onEdit,
+  onDelete,
+}) {
   return (
     <section>
       <div className="mb-5 flex items-center justify-between gap-3">
@@ -25,13 +31,19 @@ export default function HabitList({ habits, onToggle, onAdd }) {
       <div className="space-y-3">
         {habits.length > 0 ? (
           habits.map((habit) => (
-            <HabitCard key={habit.id} habit={habit} onToggle={onToggle} />
+            <HabitCard
+              key={habit.id}
+              habit={habit}
+              onToggle={onToggle}
+              onEdit={onEdit}
+              onDelete={onDelete}
+            />
           ))
         ) : (
           <div className="rounded-2xl border border-dashed border-gray-300 bg-white p-8 text-center">
             <p className="font-medium">No habits yet</p>
             <p className="mt-1 text-sm text-gray-500">
-              Add your first habit to get started.
+              Create your first habit to get started.
             </p>
           </div>
         )}
