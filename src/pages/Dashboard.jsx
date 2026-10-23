@@ -5,6 +5,7 @@ import HabitList from "../components/habits/HabitList";
 import HabitForm from "../components/habits/HabitForm";
 import { useHabitStore } from "../store/habitStore";
 import { getToday } from "../utils/dates";
+import { getCurrentStreak, getLongestStreak } from "../utils/streaks";
 
 export default function Dashboard() {
   const habits = useHabitStore((state) => state.habits);
@@ -30,6 +31,16 @@ export default function Dashboard() {
     ...habit,
     completed: habit.completedDates.includes(today),
   }));
+
+  const currentStreak = Math.max(
+    0,
+    ...habits.map((habit) => getCurrentStreak(habit.completedDates)),
+  );
+
+  const longestStreak = Math.max(
+    0,
+    ...habits.map((habit) => getLongestStreak(habit.completedDates)),
+  );
 
   function handleAdd() {
     setEditingHabit(null);
@@ -89,16 +100,16 @@ export default function Dashboard() {
 
         <ProgressCard
           title="Current streak"
-          value="Coming soon"
-          subtitle="Streak calculation is next."
+          value={`${currentStreak} ${currentStreak === 1 ? "day" : "days"}`}
+          subtitle="Best active streak across habits"
           icon={Flame}
           color="text-orange-500"
         />
 
         <ProgressCard
-          title="Daily goal"
-          value={habits.length}
-          subtitle="habits planned"
+          title="Longest streak"
+          value={`${longestStreak} ${longestStreak === 1 ? "day" : "days"}`}
+          subtitle="Personal best across habits"
           icon={Target}
           color="text-purple-500"
         />
