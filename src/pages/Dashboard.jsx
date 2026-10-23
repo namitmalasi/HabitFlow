@@ -6,6 +6,7 @@ import HabitForm from "../components/habits/HabitForm";
 import { useHabitStore } from "../store/habitStore";
 import { getToday } from "../utils/dates";
 import { getCurrentStreak, getLongestStreak } from "../utils/streaks";
+import HabitHeatmap from "../components/dashboard/HabitHeatmap";
 
 export default function Dashboard() {
   const habits = useHabitStore((state) => state.habits);
@@ -114,6 +115,8 @@ export default function Dashboard() {
           color="text-purple-500"
         />
       </section>
+
+      <HabitHeatmap habits={habits} />
 
       <HabitList
         habits={displayHabits}
