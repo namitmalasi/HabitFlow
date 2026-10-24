@@ -7,7 +7,7 @@ import { useHabitStore } from "../store/habitStore";
 import { getToday } from "../utils/dates";
 import { getCurrentStreak, getLongestStreak } from "../utils/streaks";
 import HabitHeatmap from "../components/dashboard/HabitHeatmap";
-
+import ReminderNudge from "../components/dashboard/ReminderNudge";
 export default function Dashboard() {
   const habits = useHabitStore((state) => state.habits);
   const toggleHabit = useHabitStore((state) => state.toggleHabit);
@@ -115,6 +115,8 @@ export default function Dashboard() {
           color="text-purple-500"
         />
       </section>
+
+      <ReminderNudge habits={habits} />
 
       <HabitHeatmap habits={habits} />
 
