@@ -43,7 +43,7 @@ const initialHabits = [
 
 export const useHabitStore = create(
   persist(
-    (set) => ({
+    (set, get) => ({
       habits: initialHabits,
 
       addHabit: (habit) =>
@@ -69,6 +69,10 @@ export const useHabitStore = create(
         set((state) => ({
           habits: state.habits.filter((habit) => habit.id !== id),
         })),
+
+      exportHabits: () => get().habits,
+
+      importHabits: (habits) => set({ habits }),
 
       toggleHabit: (id) =>
         set((state) => ({
