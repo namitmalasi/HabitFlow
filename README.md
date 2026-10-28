@@ -1,4 +1,3 @@
-
 # HabitFlow – Build Better Habits
 
 HabitFlow is a responsive habit tracker built with React. It helps users build consistent routines, track daily progress, monitor streaks, and understand their habits through visual analytics.
@@ -25,6 +24,4 @@ HabitFlow is a responsive habit tracker built with React. It helps users build c
 
 ## Links
 
-- **Live:** https://github.com/namitmalasi/HabitFlow
-
-
+- **Live:** https://flowhabitt.netlify.app/
